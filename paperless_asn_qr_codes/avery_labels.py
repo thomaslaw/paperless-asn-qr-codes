@@ -101,7 +101,7 @@ labelInfo: dict[str, LabelInfo] = {
         gutter_size=(20, 0),
         margin=(19, 38.5),
         pagesize=LETTER,
-        textsize=3 *mm,
+        textsize=3 * mm,
     ),
     # 3.5 x 2 business cards
     "avery5371": LabelInfo(
