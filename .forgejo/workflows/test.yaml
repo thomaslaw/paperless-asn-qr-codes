@@ -1,4 +1,4 @@
-name: lint
+name: pytest
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  lint-check:
+  pytest:
     runs-on: docker
     env:
       UV_CACHE_DIR: /tmp/.uv-cache
@@ -29,12 +29,10 @@ jobs:
             uv
       - name: Install the project
         run: uv sync --locked --all-extras --dev
-      - name: check with ruff
-        run: uv run ruff check paperless_asn_qr_codes tests 
-      - name: format with ruff
-        run: uv run ruff format --check paperless_asn_qr_codes tests 
-      - name: check with pylint
-        run: uv run pylint paperless_asn_qr_codes tests  # TODO: Check if there is a need for special pytest-related pylint rules
+      - name: run pytest
+        run: uv run coverage run -m pytest -v 
+      - name: show coverage
+        run: uv run coverage report -m
       - name: Minimize uv cache
         run: uv cache prune
       - name: cache save

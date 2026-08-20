@@ -8,6 +8,7 @@
       "matchFileNames": [
         ".forgejo/workflows/commitlint.yaml",
         ".forgejo/workflows/lint.yaml",
+        ".forgejo/workflows/test.yaml",
         ".forgejo/workflows/publish.yaml",
         ".forgejo/workflows/container.yaml",
         "Containerfile"
@@ -18,6 +19,7 @@
       "matchFileNames": [
         ".forgejo/workflows/commitlint.yaml",
         ".forgejo/workflows/lint.yaml",
+        ".forgejo/workflows/test.yaml",
         ".forgejo/workflows/publish.yaml",
         ".forgejo/workflows/container.yaml",
         "Containerfile"
@@ -38,19 +40,37 @@
       "enabled": false
     },
     {
-      "matchManagers": [
-        "copier"
+      "matchPackageNames": [
+          "ruff",
+          "pylint",
+          "pytest",
+          "coverage"
       ],
-      "separateMinorPatch": true
+      "matchFileNames": [
+        "pyproject.toml"
+      ],
+      "enabled": false
     },
     {
       "matchManagers": [
         "copier"
       ],
+      "separateMinorPatch": true,
+      "ignoreScripts": false,
+      "postUpgradeTasks": {
+        "commands": ["uv lock"],
+        "executionMode": "branch"
+      }
+    },
+    {
       "matchUpdateTypes": [
-        "patch"
+        "patch",
+        "digest"
       ],
-      "automerge": true
+      "matchPackageNames": ["codeberg.org/margau/buildenv*", "https://codeberg.org/margau/copier-python-uv.git"],
+      "groupName": "housekeeping",
+      "automerge": true,
+      "automergeSchedule": "* 0-3 */2 * *"
     }
   ]
 }
